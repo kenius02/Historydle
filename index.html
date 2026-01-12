@@ -54,15 +54,15 @@ table {
 }
 
 input#guess {
-  width: 420px;                /* szerokość jak na większości ekranów */
-  max-width: 90vw;             /* nie wychodzi poza ekran na mobile */
+  width: 420px;              
+  max-width: 90vw;            
   height: 55px;
   font-size: 18px;
   padding: 0 25px;
-  border: 2px solid #6b5a3a;   /* brązowa ramka jak atrament */
+  border: 2px solid #6b5a3a; 
   border-radius: 12px;
-  background: #f5f0e1;         /* kremowy kolor pergaminu */
-  color: #3d2b1f;              /* ciemny tekst */
+  background: #f5f0e1;        
+  color: #3d2b1f;             
   font-family: 'Eagle Lake', cursive;
   box-shadow: 
     inset 0 2px 6px rgba(0,0,0,0.2),
@@ -119,7 +119,7 @@ button#check:hover {
   box-shadow: 
     0 8px 30px rgba(0,0,0,0.6),
     inset 0 0 40px rgba(0,0,0,0.4);
-  background: rgba(180,140,100,0.25); /* lekki kolor pergaminu w środku */
+  background: rgba(180,140,100,0.25); 
 }
  
    table th, 
@@ -151,7 +151,7 @@ td.partial {
 }
 
 .tile {
-  perspective: 600px; /* efekt 3D */
+  perspective: 600px; 
 }
 
 .tile-inner {
@@ -159,12 +159,12 @@ td.partial {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateY(90deg); /* start w pozycji obróconej */
+  transform: rotateY(90deg); 
   transition: transform 0.6s ease;
 }
 
 .tile.show .tile-inner {
-  transform: rotateY(0deg); /* flip do przodu */
+  transform: rotateY(0deg); 
 }
 
 .tile-front, .tile-back {
@@ -182,7 +182,7 @@ td.partial {
 }
 
 .tile-front {
-  background: rgba(20, 20, 20, 0.7); /* przednia strona, szara */
+  background: rgba(20, 20, 20, 0.7);
   color: #e6e1d8;
 }
 
@@ -203,15 +203,15 @@ td.partial {
 
 
 .tile {
-  transform: rotateY(90deg);      /* start w pozycji "obróconej" */
-  transform-style: preserve-3d;   /* konieczne dla 3D */
-  backface-visibility: hidden;    /* tylna strona niewidoczna */
-  opacity: 0;                      /* startowo niewidoczna */
+  transform: rotateY(90deg);     
+  transform-style: preserve-3d;  
+  backface-visibility: hidden;    
+  opacity: 0;                      
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
 .tile.show {
-  transform: rotateY(0deg);       /* flip do przodu */
+  transform: rotateY(0deg);       
   opacity: 1;
 }
 
@@ -443,22 +443,13 @@ td.tile.show {
 }
 
 h1 {
-    /* Użycie ozdobnej czcionki */
     font-family: 'Eagle Lake', serif;
-    
-    /* Dokładny kolor ze zdjęcia (ciemny, ciepły brąz) */
     color: #3d2b1f; 
-    
-    /* Rozmiar i styl */
     font-size: 72px; 
     margin-top: 40px;
     margin-bottom: 20px;
     font-weight: normal;
-    
-    /* Delikatny efekt "atramentu" na papierze */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-    
-    /* Lekkie rozciągnięcie liter dla czytelności */
     letter-spacing: -1px; 
 }
 </style>
@@ -483,8 +474,6 @@ h1 {
   🎵
 </button>
 
-
-
   <button id="reload-game" title="Nowa gra">
   ↺
 </button>
@@ -504,7 +493,7 @@ h1 {
    © 2026 Kewin Szczędzina
 </footer>
 
-<!-- Ekran wygranej – ZMODYFIKOWANY -->
+<!-- Ekran wygranej -->
 <div id="win-screen" style="display:none; position:fixed; inset:0; background:rgba(10,10,10,0.6); backdrop-filter:blur(2px); z-index:999; justify-content:center; align-items:center;">
   <div class="win-panel" style="background:#1c1a16; padding:30px 45px; border-radius:12px; max-width:460px; width:90%; border:1px solid #6b5a3a; box-shadow:0 0 30px rgba(0,0,0,0.75); text-align:center; color:#e6dcc3;">
     <h2 style="font-size:2.1em; margin:0 0 8px 0; letter-spacing:0.8px;">
@@ -551,7 +540,7 @@ h1 {
 </table>
 
 <script>
-    // Ideologie – możesz dodawać nowe w jednym miejscu
+    // Ideologie 
 const IDEOLOGIE = {
   LIBERALIZM:        "Liberalizm / Demokracja liberalna",
   KONSERWATYZM:      "Konserwatyzm",
@@ -665,6 +654,10 @@ const characters = [
   { name: "Elizabeth II", gender:"K", role:"Królowa", role_tags:["Królowa","Monarcha"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Wielka Brytania)", birthYear:1926 },
   { name: "Hillary Clinton", gender:"K", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.BRAK, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1947 },
   { name: "Margaret Thatcher", gender:"K", role:"Premier", role_tags:["Premier","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Wielka Brytania)", birthYear:1925 },
+  { name:"Józef Piłsudski",gender:"M",role:"Marszałek, role_tags:["Marszałek","Wódz naczelny","Polityk","Twórca niepodległości"],epoka:"EPOKI.WSPÓŁCZESNOŚĆ",death:"SPOSOBY_SMIERCI.CHOROBA",ideology:"IDEOLOGIE.NACJONALIZM",region:"Europa (Polska)",birthYear:1867}
+
+
+
 ];
 // Liczenie prób
 let attemptCount = 0;
@@ -1125,4 +1118,5 @@ document.body.addEventListener('click', function startMusic() {
 
 </body>
 </html> 
+
 
