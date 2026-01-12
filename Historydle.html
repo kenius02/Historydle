@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<title>Historydle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="C:\Users\Kenius\Desktop\Historyczyny Quiz\Projekt historia\favicon-32x32.png">
+<style>
+  body { 
+    background: #e8dbc1; 
+     background-image: 
+         radial-gradient(circle at center, rgba(255,255,255,0.4), transparent),
+         url('https://www.transparenttextures.com/patterns/textured-paper.png');
+     color:#3d2b1f;
+     text-align: center;
+     margin: 0;
+     padding: 20px;
+     min-height: 96vh;
+     box-shadow: 
+    inset 0 0 120px 60px rgba(0,0,0,0.7), 
+    inset 0 0 200px 100px rgba(139,69,19,0.3);
+        }
+
+  body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.02) 2px,
+    rgba(0,0,0,0.02) 4px
+  );
+  opacity: 0.4;
+  pointer-events: none;
+  animation: subtleCrumple 30s linear infinite;
+}
+
+@keyframes subtleCrumple {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(20px, 10px); }
+}
+
+table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 20px rgba(0,0,0,0.4),
+    0 10px 30px rgba(0,0,0,0.5);
+}
+
+input#guess {
+  width: 420px;                /* szerokość jak na większości ekranów */
+  max-width: 90vw;             /* nie wychodzi poza ekran na mobile */
+  height: 55px;
+  font-size: 18px;
+  padding: 0 25px;
+  border: 2px solid #6b5a3a;   /* brązowa ramka jak atrament */
+  border-radius: 12px;
+  background: #f5f0e1;         /* kremowy kolor pergaminu */
+  color: #3d2b1f;              /* ciemny tekst */
+  font-family: 'Eagle Lake', cursive;
+  box-shadow: 
+    inset 0 2px 6px rgba(0,0,0,0.2),
+    0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+input#guess:focus {
+  outline: none;
+  border-color: #8b6f47;
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.3);
+}
+
+ table, footer {
+  position: relative;
+  z-index: 2;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 0 40px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  background: rgba(180,140,100,0.15);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 90%;
+}
+
+
+/* Styl przycisku Sprawdź */
+button#check {
+    height: 52px; 
+    padding: 0 30px;
+    background-color: #2e7d32; 
+    color: white;
+    font-family: "Georgia", serif;
+    font-size: 17px;
+    border: 2px solid #8b6f47;
+    border-radius: 0 10px 10px 0; 
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+button#check:hover {
+    background-color: #1b5e20; 
+}
+  
+  table {
+  margin: 30px auto;
+  font-size: 15px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 30px rgba(0,0,0,0.6),
+    inset 0 0 40px rgba(0,0,0,0.4);
+  background: rgba(180,140,100,0.25); /* lekki kolor pergaminu w środku */
+}
+ 
+   table th, 
+   table td { 
+  font-family: 'Cinzel', serif !important;
+  width: 130px;
+  height: 42px;
+  border: 1px solid #5c4a2f;
+  padding: 6px;
+  background: #3d2b1f;
+  color: #d6c7a1;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  }
+  
+  .good  {  background: #2f5d3a;color: #f5f0d8; }
+  .bad   { background: #6a1f1f;color: #f5f0d8;}
+  .arrow { font-weight:bold; font-size:1.4em; }
+  .partial {background: #8a5a2b;color: #f5f0d8;
+}
+
+/* === FLIP KAFELKA – KOLORY PO OBROCIE === */
+
+td.good,
+td.bad,
+td.partial {
+  background: transparent;
+  color: transparent;
+}
+
+.tile {
+  perspective: 600px; /* efekt 3D */
+}
+
+.tile-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateY(90deg); /* start w pozycji obróconej */
+  transition: transform 0.6s ease;
+}
+
+.tile.show .tile-inner {
+  transform: rotateY(0deg); /* flip do przodu */
+}
+
+.tile-front, .tile-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #5c4a2f;
+  border-radius: 3px;
+}
+
+.tile-front {
+  background: rgba(20, 20, 20, 0.7); /* przednia strona, szara */
+  color: #e6e1d8;
+}
+
+.tile-back.good {
+  background: #2f5d3a;
+  color: #f0ead6;
+}
+
+.tile-back.bad {
+  background: #6a1f1f;
+  color: #f0ead6;
+}
+
+.tile-back.partial {
+  background: #8a5a2b;
+  color: #f0ead6;
+}
+
+
+.tile {
+  transform: rotateY(90deg);      /* start w pozycji "obróconej" */
+  transform-style: preserve-3d;   /* konieczne dla 3D */
+  backface-visibility: hidden;    /* tylna strona niewidoczna */
+  opacity: 0;                      /* startowo niewidoczna */
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.tile.show {
+  transform: rotateY(0deg);       /* flip do przodu */
+  opacity: 1;
+}
+
+.tile.show.good {
+  background: #2f5d3a;
+  color: #f0ead6;
+}
+
+.tile.show.bad {
+  background: #6a1f1f;
+  color: #f0ead6;
+}
+
+.tile.show.partial {
+  background: #8a5a2b;
+  color: #f0ead6;
+}
+
+#suggestions {
+  position: absolute;
+  top: 100%;                    
+  left: 0;                       
+  width: 100%;                  
+  max-height: 240px;
+  overflow-y: auto;
+  background: #f5f0e1;           
+  border: 2px solid #6b5a3a;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  z-index: 100;
+  display: none;
+  text-align: left;
+  color: #3d2b1f;
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.suggestion-item:hover {
+  background: #e8d9c0;
+}
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.win-screen {
+display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.win-panel {
+  background: #1c1a16;
+  padding: 50px;
+  border-radius: 12px;
+  max-width: 520px;
+  border: 1px solid #6b5a3a;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  text-align: center;
+  color: #e6dcc3;
+}
+
+.win-card {
+  background: #1a1a1a;
+  border: 1px solid #555;
+  padding: 40px 50px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+.win-symbol {
+  font-size: 3em;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.win-card h2 {
+  font-family: "Times New Roman", serif;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.win-text {
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+#win-character {
+  font-family: "Times New Roman", serif;
+  font-size: 1.6em;
+  margin: 10px 0 20px 0;
+}
+
+.win-attempts {
+  font-size: 0.95em;
+  opacity: 0.75;
+  margin-bottom: 30px;
+}
+
+.arrow-indicator {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  vertical-align: middle;
+  margin-left: 5px;
+  margin-bottom: 1px;        
+  position: relative;
+  top: 1px;                  
+}
+
+.arrow-up {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 10px solid #4caf50;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.arrow-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid #f44336;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.new-game-btn {
+  margin-top: 25px;
+  padding: 12px 36px;
+  font-size: 1.1em;
+  background: transparent;
+  border: 1px solid #8c7a52;
+  color: #e6dcc3;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.new-game-btn:hover {
+  background: rgba(140,122,82,0.15);
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.015),
+      rgba(255,255,255,0.015) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+#reload-game {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(40, 35, 25, 0.85);
+  color: #e6dcc2;
+  border: 1px solid #7b6a42;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 9999;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#reload-game:hover {
+  background: rgba(60, 52, 38, 0.95);
+  transform: rotate(-90deg) scale(1.05);
+}
+
+.row-hidden td {
+  opacity: 0;
+  transform: translateY(15px) scale(0.95);
+}
+
+.row-show td {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 0.35s ease;
+}
+
+td.tile {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+td.tile.show {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.25s ease;
+}
+
+/* === FLIP KAFELKA === */
+.tile {
+  transform: rotateY(90deg) scale(0.8);
+  opacity: 0;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.tile.show {
+  transform: rotateY(0deg) scale(1);
+  opacity: 1;
+}
+
+h1 {
+    /* Użycie ozdobnej czcionki */
+    font-family: 'Eagle Lake', serif;
+    
+    /* Dokładny kolor ze zdjęcia (ciemny, ciepły brąz) */
+    color: #3d2b1f; 
+    
+    /* Rozmiar i styl */
+    font-size: 72px; 
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: normal;
+    
+    /* Delikatny efekt "atramentu" na papierze */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    
+    /* Lekkie rozciągnięcie liter dla czytelności */
+    letter-spacing: -1px; 
+}
+</style>
+
+</head>
+<body>
+
+<button id="musicToggle" style="
+  position:fixed;
+  top: 60px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(40, 35, 25, 0.85);
+  color: #e6dcc2;
+  border: 1px solid #7b6a42;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 9999;
+">
+  🎵
+</button>
+
+
+
+  <button id="reload-game" title="Nowa gra">
+  ↺
+</button>
+
+<footer style="
+  position: fixed;
+  bottom: 15px;
+  right: 20px;
+  color: #53462c;                
+  font-family: 'Eagle Lake', serif;
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  z-index: 10;
+">
+   © 2026 Kewin Szczędzina
+</footer>
+
+<!-- Ekran wygranej – ZMODYFIKOWANY -->
+<div id="win-screen" style="display:none; position:fixed; inset:0; background:rgba(10,10,10,0.6); backdrop-filter:blur(2px); z-index:999; justify-content:center; align-items:center;">
+  <div class="win-panel" style="background:#1c1a16; padding:30px 45px; border-radius:12px; max-width:460px; width:90%; border:1px solid #6b5a3a; box-shadow:0 0 30px rgba(0,0,0,0.75); text-align:center; color:#e6dcc3;">
+    <h2 style="font-size:2.1em; margin:0 0 8px 0; letter-spacing:0.8px;">
+      Kronika Ukończona
+    </h2>
+    <p style="font-size:1.1em; color:#cbbfa3; margin:0 0 12px 0;">
+      Postać historyczna:
+    </p>
+    <h3 id="win-character" style="font-size:1.9em; margin:0 0 15px 0; font-weight:bold;"></h3>
+    <p id="win-attempts" style="font-size:1.05em; color:#b9ad8c; margin:0 0 20px 0;"></p>
+    <div style="display:flex; gap:15px; justify-content:center;">
+      <button id="new-game-btn" class="new-game-btn" style="padding:10px 32px; font-size:1.05em;">
+        Nowa gra
+      </button>
+      <button id="close-win-btn" class="new-game-btn" style="padding:10px 32px; font-size:1.05em; background:rgba(140,122,82,0.2);">
+        Zamknij
+      </button>
+    </div>
+  </div>
+</div>
+<header>
+  <h1>Historydle</h1>
+</header>
+<!-- Przycisk "?" w prawym górnym rogu -->
+<button id="legend-btn" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2em; cursor: pointer; z-index: 100;">?</button>
+
+<div style="position: relative; display: inline-block; margin: 30px auto;">
+        <input type="text" id="guess" placeholder="Wpisz postać..." autocomplete="off">
+        <button id="check">Sprawdź</button>
+        <div id="suggestions"></div>
+    </div>
+
+<table id="results">
+<tr>
+  <th>Bohater</th>
+  <th>Płeć</th>
+  <th>Rola</th>
+  <th>Epoka</th>
+  <th>Sposób śmierci</th>
+  <th>Ideologia</th>
+  <th>Region</th>
+  <th>Rok urodzenia</th>
+</tr>
+</table>
+
+<script>
+    // Ideologie – możesz dodawać nowe w jednym miejscu
+const IDEOLOGIE = {
+  LIBERALIZM:        "Liberalizm / Demokracja liberalna",
+  KONSERWATYZM:      "Konserwatyzm",
+  SOCJALIZM:         "Socjalizm / Socjaldemokracja",
+  KOMUNIZM:          "Komunizm / Marksizm-leninizm",
+  NAZIZM:            "Nazizm / Faszyzm",
+  NACJONALIZM:       "Nacjonalizm / Szowinizm",
+  MONARCHIZM:        "Monarchizm / Absolutyzm",
+  TEOKRACJA:         "Teokracja / Fundamentalizm religijny",
+  ANARCHIZM:         "Anarchizm",
+  HUMANIZM:          "Humanizm / Sekularyzm",
+  PACYFIZM:          "Pacyfizm",
+  AUTORYTARYZM:      "Autorytaryzm",
+  DEMOKRACJA:        "Demokracja",
+  KAPITALIZM:        "Kapitalizm / Wolny rynek"
+};
+
+// Sposoby śmierci
+const SPOSOBY_SMIERCI = {
+  NATURALNA:         "Naturalna",
+  CHOROBA:           "Choroba / Schorzenie",
+  SAMOBÓJSTWO:       "Samobójstwo",
+  ZAMACH:            "Zamach / Morderstwo",
+  EGZEKUCJA:         "Egzekucja / Kara śmierci",
+  BITWA:             "Bitwa / Poległ w walce",
+  WYPADEK:           "Wypadek / Katastrofa",
+  ZATRUCIE:          "Zatrucie (celowe)",
+  NIEZNANE:          "Nieznane / Zaginął"
+};
+
+// Epoki
+
+const EPOKI = {
+  STAROŻYTNOŚĆ:      "Starożytność",
+  ŚREDNIOWIECZE:     "Średniowiecze",
+  RENESANS:          "Renesans",
+  NOWOŻYTNOŚĆ:       "Nowożytność",
+  OŚWIECENIE:        "Oświecenie / XVIII w.",
+  XIX_WIEK:          "XIX wiek",
+  WSPÓŁCZESNOŚĆ:     "XX–XXI wiek / Współczesność",
+  ANTYK_PÓŹNY:       "Późna starożytność",      
+  ŚREDNIOWIECZE_WCZESNE: "Wczesne średniowiecze", 
+};
+
+// Rozszerzona lista (możesz dodawać więcej postaci)
+const characters = [
+  { name: "Joanna d’Arc", gender: "K", role: "Bohater Narodowy", role_tags:["Bohater Narodowy","Wojowniczka"], epoka: EPOKI.ŚREDNIOWIECZE, death: SPOSOBY_SMIERCI.EGZEKUCJA, ideology: IDEOLOGIE.TEOKRACJA, region: "Europa (Francja)", birthYear: 1412 },
+  { name: "Adolf Hitler", gender: "M", role: "Dyktator", role_tags: ["Dyktator", "Wódz naczelny", "Polityk"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.SAMOBÓJSTWO, ideology: IDEOLOGIE.NAZIZM, region: "Europa (Niemcy/Austria)", birthYear: 1889 },
+  { name: "Albert Einstein", gender: "M", role: "Naukowiec", role_tags: ["Naukowiec"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.PACYFIZM, region: "Europa (Niemcy)", birthYear: 1879 },
+  { name: "Kleopatra VII", gender: "K", role: "Królowa", role_tags: ["Królowa","Monarcha", "Władczyni"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.SAMOBÓJSTWO, ideology: IDEOLOGIE.MONARCHIZM, region: "Afryka (Egipt)", birthYear: -69 },
+  { name: "Napoleon Bonaparte", gender: "M", role: "Cesarz", role_tags: ["Cesarz","Monarcha", "Wódz naczelny", "Polityk", "Cesarz"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja)", birthYear: 1769 },
+  { name: "Józef Stalin", gender: "M", role: "Dyktator", role_tags: ["Dyktator", "Wódz naczelny", "Polityk"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.KOMUNIZM, region: "Europa (Rosja)", birthYear: 1878 },
+  { name: "Winston Churchill", gender: "M", role: "Premier", role_tags: ["Premier","Polityk","Wódz naczelny"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.KONSERWATYZM, region: "Europa (Wielka Brytania)", birthYear: 1874 },
+  { name: "Juliusz Cezar", gender: "M", role: "Dyktator", role_tags: ["Dyktator", "Wódz naczelny", "Polityk"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.ZAMACH, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Europa (Włochy)", birthYear: -100 },
+  { name: "Maria Skłodowska-Curie", gender: "K", role: "Naukowiec", role_tags: ["Naukowiec"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.CHOROBA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Polska/Francja)", birthYear: 1867 },
+  { name: "Mikołaj Kopernik", gender: "M", role: "Naukowiec", role_tags: ["Naukowiec","Astronom"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Polska)", birthYear: 1473 },
+  { name: "Mahatma Gandhi", gender: "M", role: "Lider ruchu niepodległościowego", role_tags: ["Lider ruchu niepodległościowego","Rewolucjonista","Działacz społeczny","Polityk"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.ZAMACH, ideology: IDEOLOGIE.PACYFIZM, region: "Azja (Indie)", birthYear: 1869 },
+  { name: "Włodzimierz Lenin", gender: "M", role: "Przywódca Bolszewicki", role_tags: ["Przywódca Bolszewicki","Rewolucjonista","Polityk","Dyktator"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.KOMUNIZM, region: "Europa (Rosja)", birthYear: 1870 },
+  { name: "Jan III Sobieski", gender: "M", role: "Król", role_tags: ["Król","Monarcha","Wódz naczelny"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Polska)", birthYear: 1629 },
+  { name: "Martin Luther King Jr.", gender: "M", role: "Działacz praw obywatelskich", role_tags: ["Działacz praw obywatelskich","Działacz społeczny","Rewolucjonista"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.ZAMACH, ideology: IDEOLOGIE.PACYFIZM, region: "Ameryka Północna (USA)", birthYear: 1929 },
+  { name: "Sokrates", gender: "M", role: "Filozof", role_tags:["Filozof"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.ZAMACH, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Grecja)", birthYear: -470 },
+  { name: "Arystoteles", gender: "M", role: "Filozof", role_tags:["Filozof","Naukowiec"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Grecja)", birthYear: -384 },
+  { name: "Aleksander Wielki", gender: "M", role: "Wojownik", role_tags:["Wódz","Wojownik","Król"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Macedonia)", birthYear: -356 },
+  { name: "Konfucjusz", gender: "M", role: "Filozof", role_tags:["Filozof"], epoka: EPOKI.STAROŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Azja (Chiny)", birthYear: -551 },
+  { name: "Mikołaj Machiavelli", gender: "M", role: "Filozof / Polityk", role_tags:["Filozof","Polityk"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Włochy)", birthYear: 1469 },
+  { name: "Galileusz", gender: "M", role: "Naukowiec", role_tags:["Naukowiec","Astronom"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Włochy)", birthYear: 1564 },
+  { name: "Karol Darwin", gender: "M", role: "Naukowiec", role_tags:["Naukowiec","Biolog"], epoka: EPOKI.XIX_WIEK, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Wielka Brytania)", birthYear: 1809 },
+  { name: "Florence Nightingale", gender: "K", role: "Pielęgniarka", role_tags:["Pielęgniarka","Działaczka"], epoka: EPOKI.XIX_WIEK, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.PACYFIZM, region: "Europa (Wielka Brytania)", birthYear: 1820 },
+  { name: "Simón Bolívar", gender: "M", role: "Wódz Niepodległościowy", role_tags:["Wódz","Rewolucjonista"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Południowa (Wenezuela)", birthYear: 1783 },
+  { name: "Thomas Jefferson", gender: "M", role: "Prezydent / Polityk", role_tags:["Prezydent","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Północna (USA)", birthYear: 1743 },
+  { name: "Władysław Jagiełło", gender: "M", role: "Król", role_tags:["Król","Monarcha"], epoka: EPOKI.ŚREDNIOWIECZE, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Polska/Litwa)", birthYear: 1351 },
+  { name: "Jan Paweł II", gender: "M", role: "Papież", role_tags:["Papież","Religia"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.TEOKRACJA, region: "Europa (Polska/Watykan)", birthYear: 1920 },
+  { name: "Marie Antoinette", gender: "K", role: "Królowa", role_tags:["Królowa","Monarcha"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.EGZEKUCJA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja/Austria)", birthYear: 1755 },
+  { name: "Cesarz Hirohito", gender: "M", role: "Cesarz", role_tags:["Cesarz","Monarcha"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Azja (Japonia)", birthYear: 1901 },
+  { name: "Lech Wałęsa", gender: "M", role: "Polityk / Działacz", role_tags:["Polityk","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Europa (Polska)", birthYear: 1943 },
+  { name: "Elżbieta I", gender: "K", role: "Królowa", role_tags:["Królowa","Monarcha"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Wielka Brytania)", birthYear: 1533 },
+  { name: "Czang Kaj-szek", gender: "M", role: "Polityk / Wódz", role_tags:["Polityk","Wódz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Azja (Chiny)", birthYear: 1887 },
+  { name: "Nelson Mandela", gender: "M", role: "Prezydent / Działacz", role_tags:["Prezydent","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Afryka (RPA)", birthYear: 1918 },
+  { name: "Wojciech Jaruzelski", gender: "M", role: "Polityk / Wojskowy", role_tags:["Polityk","Wojskowy"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Europa (Polska)", birthYear: 1923 },
+  { name: "Catherine de Medici", gender: "K", role: "Królowa / Polityk", role_tags:["Królowa","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja/Włochy)", birthYear: 1519 },
+  { name: "Leonardo da Vinci", gender: "M", role: "Artysta / Naukowiec", role_tags:["Artysta","Naukowiec"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Włochy)", birthYear: 1452 },
+  { name: "Wolfgang Amadeus Mozart", gender: "M", role: "Kompozytor", role_tags:["Kompozytor"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Austria)", birthYear: 1756 },
+  { name: "Hammurabi", gender:"M", role:"Król", role_tags:["Król","Monarcha"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Azja (Babilonia)", birthYear:-1810 },
+  { name: "Nefertiti", gender:"K", role:"Królowa", role_tags:["Królowa","Monarcha"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Afryka (Egipt)", birthYear:-1370 },
+  { name: "Perykles", gender:"M", role:"Polityk", role_tags:["Polityk","Wódz"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.DEMOKRACJA, region:"Europa (Grecja)", birthYear:-495 },
+  { name: "Herodot", gender:"M", role:"Historyk", role_tags:["Historyk","Filozof"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Grecja)", birthYear:-484 },
+  { name: "Pitagoras", gender:"M", role:"Filozof / Matematyka", role_tags:["Filozof","Matematyk"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Grecja)", birthYear:-570 },
+  { name: "Homer", gender:"M", role:"Poeta", role_tags:["Poeta"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Grecja)", birthYear:-800 },
+  { name: "Ramzes II", gender:"M", role:"Faraon", role_tags:["Faraon","Wojownik","Monarcha"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Afryka (Egipt)", birthYear:-1303 },
+  { name: "Kant", gender:"M", role:"Filozof", role_tags:["Filozof"], epoka:EPOKI.OŚWIECENIE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Prusy)", birthYear:1724 },
+  { name: "Voltaire", gender:"M", role:"Filozof", role_tags:["Filozof"], epoka:EPOKI.OŚWIECENIE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Francja)", birthYear:1694 },
+  { name: "Karl Marx", gender:"M", role:"Filozof / Ekonomista", role_tags:["Filozof","Ekonomista"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KOMUNIZM, region:"Europa (Niemcy)", birthYear:1818 },
+  { name: "Ludwig van Beethoven", gender:"M", role:"Kompozytor", role_tags:["Kompozytor"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Niemcy)", birthYear:1770 },
+  { name: "Charles Darwin", gender:"M", role:"Naukowiec", role_tags:["Naukowiec"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Wielka Brytania)", birthYear:1809 },
+  { name: "Nikola Tesla", gender:"M", role:"Naukowiec / Wynalazca", role_tags:["Naukowiec","Wynalazca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Serbia/USA)", birthYear:1856 },
+  { name: "Thomas Edison", gender:"M", role:"Wynalazca / Przedsiębiorca", role_tags:["Wynalazca","Przedsiębiorca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KAPITALIZM, region:"Ameryka Północna (USA)", birthYear:1847 },
+  { name: "Louis Pasteur", gender:"M", role:"Naukowiec / Lekarz", role_tags:["Naukowiec","Lekarz"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Francja)", birthYear:1822 },
+  { name: "Klejstenes", gender:"M", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.DEMOKRACJA, region:"Europa (Grecja)", birthYear:-570 },
+  { name: "Harriet Tubman", gender:"K", role:"Działaczka / Reformatorka", role_tags:["Działaczka","Reformatorka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1822 },
+  { name: "Susan B. Anthony", gender:"K", role:"Działaczka", role_tags:["Działaczka","Feministka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1820 },
+  { name: "Emmeline Pankhurst", gender:"K", role:"Działaczka", role_tags:["Działaczka","Feministka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Europa (Wielka Brytania)", birthYear:1858 },
+  { name: "Mansa Musa", gender:"M", role:"Król", role_tags:["Król","Monarcha"], epoka:EPOKI.ŚREDNIOWIECZE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Afryka (Mali)", birthYear:1280 },
+  { name: "Czyngis-chan", gender:"M", role:"Wódz / Zdobywca", role_tags:["Wódz","Wojownik"], epoka:EPOKI.ŚREDNIOWIECZE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Azja (Mongolia)", birthYear:1162 },
+  { name: "Attyla", gender:"M", role:"Wódz", role_tags:["Wódz","Wojownik"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Hunowie)", birthYear:406 },
+  { name: "Władimir Putin", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.AUTORYTARYZM, region:"Europa (Rosja)", birthYear:1952 },
+  { name: "Barack Obama", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1961 },
+  { name: "Angela Merkel", gender:"K", role:"Kanclerz", role_tags:["Kanclerz","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Niemcy)", birthYear:1954 },
+  { name: "Abraham Lincoln", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.ZAMACH, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1809 },
+  { name: "Katarzyna II Wielka", gender:"K", role:"Caryca", role_tags:["Caryca","Monarcha"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Rosja)", birthYear:1729 },
+  { name: "Elizabeth II", gender:"K", role:"Królowa", role_tags:["Królowa","Monarcha"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Wielka Brytania)", birthYear:1926 },
+  { name: "Hillary Clinton", gender:"K", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1947 },
+  { name: "Margaret Thatcher", gender:"K", role:"Premier", role_tags:["Premier","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Wielka Brytania)", birthYear:1925 },
+];
+// Liczenie prób
+let attemptCount = 0;
+// Losujemy postać na odpowiedź
+let currentAnswer = characters[Math.floor(Math.random() * characters.length)];
+
+  // Funkcja resetująca całą grę
+function resetGame() {
+  attemptCount = 0;
+  currentAnswer = characters[Math.floor(Math.random() * characters.length)];  // Nowa losowa postać
+  document.getElementById("results").innerHTML = `
+    <tr>
+      <th>Bohater</th>
+      <th>Płeć</th>
+      <th>Rola</th>
+      <th>Epoka</th>
+      <th>Sposób śmierci</th>
+      <th>Ideologia</th>
+      <th>Region</th>
+      <th>Rok urodzenia</th>
+    </tr>
+  `;
+  document.getElementById("win-screen").style.display = "none";
+  document.getElementById("guess").value = "";
+  document.getElementById("guess").focus();
+}
+
+function getCellClass(guessValue, correctValue) {
+  if (!guessValue || !correctValue) return "bad";
+  return guessValue.toString().trim().toLowerCase() === correctValue.toString().trim().toLowerCase() 
+    ? "good" 
+    : "bad";
+}
+function getRegionClass(guessRegion, correctRegion) {
+    if (!guessRegion || !correctRegion) return "bad";
+
+    const guessClean = guessRegion.toLowerCase().trim();
+    const correctClean = correctRegion.toLowerCase().trim();
+
+    // Pełna zgodność
+    if (guessClean === correctClean) {
+        return "good";
+    }
+
+    // Wyciągamy kontynenty
+    const getContinent = str => {
+        const match = str.match(/^([^(]+)\s*\(/);
+        return match ? match[1].trim().toLowerCase() : str.toLowerCase();
+    };
+
+    const guessCont = getContinent(guessRegion);
+    const correctCont = getContinent(correctRegion);
+
+    // Ten sam kontynent → pomarańczowy
+    if (guessCont === correctCont) {
+        return "partial";   // ← nowy stan
+    }
+
+    // Inny kontynent → czerwony
+    return "bad";
+}
+
+function getRoleClass(guessRoles, correctRoles) {
+    if (!Array.isArray(guessRoles) || !Array.isArray(correctRoles)) return "bad";
+
+    // Pełna zgodność – ta sama główna rola (pierwszy element tablicy)
+    if (guessRoles[0] === correctRoles[0]) {
+        return "good";
+    }
+
+    // Częściowa zgodność – jest przynajmniej jedna wspólna rola
+    const common = guessRoles.some(role => correctRoles.includes(role));
+    return common ? "partial" : "bad";
+}
+
+// Funkcja pomarańczowe tagowanie ról
+function getRoleDisplay(guessTags, correctTags, originalRole) {
+  const roleClass = getRoleClass(guessTags, correctTags);
+  
+  if (roleClass === "good") {
+    return originalRole;               // zielony → pokazujemy pełną oryginalną rolę
+  }
+  
+  if (roleClass !== "partial") {
+    return originalRole;               // czerwony → pokazujemy oryginalną rolę
+  }
+
+  // partial → pokazujemy WSZYSTKIE wspólne tagi
+  const commonTags = guessTags.filter(tag => 
+    correctTags.some(correctTag => 
+      tag.toLowerCase().trim() === correctTag.toLowerCase().trim()
+    )
+  );
+
+  if (commonTags.length === 0) {
+    return originalRole;
+  }
+
+  // Pokazujemy wszystkie wspólne tagi oddzielone ukośnikiem
+  return commonTags.join(" / ");
+}
+
+function getBirthYearDisplay(guessYear, answerYear) {
+    guessYear = Number(guessYear);
+    answerYear = Number(answerYear);
+
+    if (isNaN(guessYear) || isNaN(answerYear)) {
+        return { text: "?", cls: "bad" };
+    }
+
+    if (guessYear === answerYear) {
+        return { text: guessYear.toString(), cls: "good" };
+    }
+
+    const direction = guessYear < answerYear ? "up" : "down";
+    const arrowClass = `arrow-${direction}`;
+    const arrowColor = direction === "up" ? "#4caf50" : "#f44336";
+    
+    // Ładna strzałka zamiast zwykłego tekstu
+    const arrowHtml = `<span class="${arrowClass}"></span>`;
+    
+    return {
+        text: `${guessYear}${arrowHtml}`,
+        cls: "bad"  // kolor tła nadal czerwony, bo nie zgadza się
+    };
+}
+    
+document.getElementById("check").addEventListener("click", () => {
+  const input = document.getElementById("guess");
+  const guessName = input.value.trim();
+  if (!guessName) return;
+
+  attemptCount++;  // ← ZWIĘKSZAMY LICZNIK PRÓB
+
+  const guessed = characters.find(c => 
+    c.name.toLowerCase() === guessName.toLowerCase()
+  );
+
+  if (!guessed) {
+  // Tworzymy komunikat "Brak postaci!"
+  const msg = document.createElement("div");
+  msg.textContent = "Brak postaci!";
+  msg.className = "no-character-msg"; // klasa do stylu
+  document.body.appendChild(msg);
+
+  // Automatycznie usuwamy po 2 sekundach
+  setTimeout(() => {
+    msg.remove();
+  }, 2000);
+
+  input.value = "";
+  input.focus();
+  return; // przerywamy dalsze sprawdzanie
+}
+
+  const birthInfo = getBirthYearDisplay(guessed.birthYear, currentAnswer.birthYear);
+
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="${getCellClass(guessed.name, currentAnswer.name)}">${guessed.name}</td>
+    <td class="${getCellClass(guessed.gender, currentAnswer.gender)}">${guessed.gender}</td>
+    <td class="${getRoleClass(guessed.role_tags, currentAnswer.role_tags)}">
+      ${getRoleDisplay(guessed.role_tags, currentAnswer.role_tags, guessed.role)}</td>
+    <td class="${getCellClass(guessed.epoka, currentAnswer.epoka)}">${guessed.epoka}</td>
+    <td class="${getCellClass(guessed.death, currentAnswer.death)}">${guessed.death}</td>
+    <td class="${getCellClass(guessed.ideology, currentAnswer.ideology)}">${guessed.ideology}</td>
+    <td class="${getRegionClass(guessed.region, currentAnswer.region)}">${guessed.region}</td>
+    <td class="${birthInfo.cls}">${birthInfo.text}</td>
+  `;
+
+  const table = document.getElementById("results");
+
+// 1️⃣ kafelki startowo niewidoczne
+const cells = row.querySelectorAll("td");
+cells.forEach(td => td.classList.add("tile"));
+
+table.appendChild(row);
+
+// Animacja + dźwięk – tylko ta jedna pętla!
+cells.forEach((cell, index) => {
+  setTimeout(() => {
+    cell.classList.add("show");
+
+    const flipSound = document.getElementById("flipSound");
+    if (flipSound) {
+      flipSound.currentTime = 0;
+      flipSound.volume = 0.4; 
+      flipSound.play().catch(err => {
+        console.log("Błąd odtwarzania:", err.message); 
+      });
+    }
+  }, index * 300);
+});
+
+  // === SPRAWDZENIE, CZY ODGADNIĘTO ===
+  if (guessed.name.toLowerCase() === currentAnswer.name.toLowerCase()) {
+    
+    
+    
+    // Wyświetlamy ekran wygranej
+    document.getElementById("win-character").textContent = currentAnswer.name;
+    document.getElementById("win-attempts").textContent = `Udało Ci się w ${attemptCount} próbach! 🎉`;
+    document.getElementById("win-screen").style.display = "flex";
+  }
+
+  input.value = "";
+  input.focus();
+});
+
+
+
+// ────────────── AUTOUZUPEŁNIANIE ──────────────
+
+
+document.getElementById("musicToggle").addEventListener("click", () => {
+  const bgMusic = document.getElementById("bgMusic");
+  if (bgMusic.paused) {
+    bgMusic.play();
+    bgMusic.volume = 0.25;
+  } else {
+    bgMusic.pause();
+  }
+});
+
+
+
+const input = document.getElementById("guess");
+const suggestionsDiv = document.getElementById("suggestions");
+
+input.addEventListener("input", () => {
+  const value = input.value.trim().toLowerCase();
+  suggestionsDiv.innerHTML = "";
+  
+  if (value.length < 1) {
+    suggestionsDiv.style.display = "none";
+    return;
+  }
+
+  const matches = characters
+    .filter(c => c.name.toLowerCase().includes(value))
+    .slice(0, 8);
+
+  if (matches.length === 0) {
+    suggestionsDiv.style.display = "none";
+    return;
+  }
+
+  matches.forEach(char => {
+    const item = document.createElement("div");
+    item.className = "suggestion-item";
+    item.textContent = char.name;
+    item.addEventListener("click", () => {
+      input.value = char.name;
+      suggestionsDiv.style.display = "none";
+      // input.focus();   // opcjonalne - nie każdy lubi
+    });
+    suggestionsDiv.appendChild(item);
+  });
+
+  suggestionsDiv.style.display = "block";
+});
+
+// Zamykanie listy po kliknięciu poza nią
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("guess");
+  const suggestionsDiv = document.getElementById("suggestions");
+
+  input.addEventListener("input", () => {
+    const value = input.value.trim().toLowerCase();
+    suggestionsDiv.innerHTML = "";
+    
+    if (value.length < 1) {
+      suggestionsDiv.style.display = "none";
+      return;
+    }
+
+    const matches = characters
+      .filter(c => c.name.toLowerCase().includes(value))
+      .slice(0, 8);
+
+    if (matches.length === 0) {
+      suggestionsDiv.style.display = "none";
+      return;
+    }
+
+    matches.forEach(char => {
+      const item = document.createElement("div");
+      item.className = "suggestion-item";
+      item.textContent = char.name;
+      item.addEventListener("click", () => {
+        input.value = char.name;
+        suggestionsDiv.style.display = "none";
+      });
+      suggestionsDiv.appendChild(item);
+    });
+
+    suggestionsDiv.style.display = "block";
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+      suggestionsDiv.style.display = "none";
+    }
+  });
+});
+// ────────────── koniec autouzupełniania ──────────────
+ 
+// Wyjaśnienia koloru i wytłumaczenie zasad
+let cleanup = null;
+let tooltip = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const legendBtn = document.getElementById("legend-btn");
+  
+  if (!legendBtn) {
+    console.warn("Przycisk ? nie znaleziony!");
+    return;
+  }
+
+  const createTooltip = () => {
+    if (tooltip) tooltip.remove();
+
+    tooltip = document.createElement("div");
+    tooltip.id = "legend-tooltip";
+    tooltip.style.position = "absolute";
+    tooltip.style.background = "#222";
+    tooltip.style.border = "1px solid #444";
+    tooltip.style.borderRadius = "8px";
+    tooltip.style.padding = "20px";
+    tooltip.style.zIndex = "200";
+    tooltip.style.boxShadow = "0 4px 15px rgba(0,0,0,0.6)";
+    tooltip.style.color = "white";
+    tooltip.style.maxWidth = "380px";
+    tooltip.style.fontSize = "1.1em";
+    tooltip.style.pointerEvents = "none";
+
+    tooltip.innerHTML = `
+      <div style="margin-bottom: 15px; font-weight: bold; font-size: 1.3em;">Na czym polega gra?</div>
+      <p style="margin: 0 0 15px 0; line-height: 1.5;">
+        Odgadnij tajemniczą postać historyczną w maksymalnie 6 próbach!<br>
+        Po każdej próbie kolory podpowiedzą Ci, co jest poprawne, częściowo poprawne lub błędne.
+      </p>
+      
+      <div style="margin-bottom: 15px; font-weight: bold;">Wskaźnik kolorów</div>
+      
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div style="width: 40px; height: 40px; background: #1b5e20; border-radius: 6px;"></div>
+        <span>Prawidłowe</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div style="width: 40px; height: 40px; background: #b35c00; border-radius: 6px;"></div>
+        <span>Częściowe dopasowanie</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div style="width: 40px; height: 40px; background: #7f0000; border-radius: 6px;"></div>
+        <span>Nieprawidłowe</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+  <div style="display: flex; align-items: center;">
+    <span class="arrow-indicator arrow-up"></span>
+    <span>Wyższy (urodziła się później)</span>
+  </div>
+  <div style="display: flex; align-items: center;">
+    <span class="arrow-indicator arrow-down"></span>
+    <span>Niższy (urodziła się wcześniej)</span>
+  </div>
+</div>
+    `;
+
+    document.body.appendChild(tooltip);
+    return tooltip;
+  };
+
+  legendBtn.addEventListener("mouseenter", () => {
+    const tt = createTooltip();
+
+    cleanup = autoUpdate(legendBtn, tt, () => {
+      computePosition(legendBtn, tt, {
+        placement: 'bottom',
+        middleware: [
+          offset(8),                  // odstęp 8px
+          flip(),                      // automatycznie odwraca gdy nie mieści się
+          shift({ padding: 8 })        // przesuwa gdy wychodzi poza ekran
+        ]
+      }).then(({x, y}) => {
+        Object.assign(tt.style, {
+          left: `${x}px`,
+          top: `${y}px`
+        });
+      });
+    });
+  });
+
+  legendBtn.addEventListener("mouseleave", () => {
+    if (cleanup) {
+      cleanup();
+      cleanup = null;
+    }
+    if (tooltip) {
+      tooltip.remove();
+      tooltip = null;
+    }
+  });
+});
+// Reset gry
+document.getElementById("reload-game").onclick = () => {
+  location.reload();
+};
+//nowa gra
+document.getElementById("new-game-btn").addEventListener("click", () => {
+  resetGame();
+    });
+document.getElementById("close-win-btn").addEventListener("click", () => {
+  document.getElementById("win-screen").style.display = "none";
+});
+
+// Automatyczne odtwarzanie muzyki po pierwszym kliknięciu na stronę
+document.body.addEventListener('click', function startMusic() {
+  const bgMusic = document.getElementById("bgMusic");
+  if (bgMusic) {
+    bgMusic.volume = 0.2;        
+    bgMusic.play().catch(err => {
+      console.log("Muzyka zablokowana:", err);
+    });
+  }
+  // Usuwamy listener, żeby odtwarzało tylko raz
+  document.body.removeEventListener('click', startMusic);
+}, { once: true });
+
+</script>
+<script type="module">
+  import {
+    computePosition,
+    autoUpdate,
+    offset,
+    flip,
+    shift
+  } from 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3/+esm';
+
+  // Udostępniamy funkcje globalnie, żeby reszta kodu mogła ich użyć
+  window.computePosition = computePosition;
+  window.autoUpdate = autoUpdate;
+  window.offset = offset;
+  window.flip = flip;
+  window.shift = shift;
+</script>
+
+<!-- Dźwięk obracania kafelka -->
+<audio id="flipSound" preload="auto">
+  <source src="flip.wav" type="audio/wav">
+</audio>
+
+<!-- Muzyka w tle – delikatna, średniowieczna -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="Muzyka_w_tle.wav" type="audio/mpeg"> 
+  Twoja przeglądarka nie obsługuje audio.
+</audio>
+
+</body>
+</html> 
