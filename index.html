@@ -579,7 +579,8 @@ const SPOSOBY_SMIERCI = {
   BITWA:             "Bitwa / Poległ w walce",
   WYPADEK:           "Wypadek / Katastrofa",
   ZATRUCIE:          "Zatrucie (celowe)",
-  NIEZNANE:          "Nieznane / Zaginął"
+  NIEZNANE:          "Nieznane / Zaginął",
+  BRAK:              "Żyje"
 };
 
 // Epoki
@@ -620,19 +621,19 @@ const characters = [
   { name: "Galileusz", gender: "M", role: "Naukowiec", role_tags:["Naukowiec","Astronom"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Włochy)", birthYear: 1564 },
   { name: "Karol Darwin", gender: "M", role: "Naukowiec", role_tags:["Naukowiec","Biolog"], epoka: EPOKI.XIX_WIEK, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Wielka Brytania)", birthYear: 1809 },
   { name: "Florence Nightingale", gender: "K", role: "Pielęgniarka", role_tags:["Pielęgniarka","Działaczka"], epoka: EPOKI.XIX_WIEK, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.PACYFIZM, region: "Europa (Wielka Brytania)", birthYear: 1820 },
-  { name: "Simón Bolívar", gender: "M", role: "Wódz Niepodległościowy", role_tags:["Wódz","Rewolucjonista"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Południowa (Wenezuela)", birthYear: 1783 },
-  { name: "Thomas Jefferson", gender: "M", role: "Prezydent / Polityk", role_tags:["Prezydent","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Północna (USA)", birthYear: 1743 },
+  { name: "Simón Bolívar", gender: "M", role: "Wódz Niepodległościowy", role_tags:["Wódz Niepodległościowy","Wódz","Rewolucjonista"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Południowa (Wenezuela)", birthYear: 1783 },
+  { name: "Thomas Jefferson", gender: "M", role: "Prezydent", role_tags:["Prezydent","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Ameryka Północna (USA)", birthYear: 1743 },
   { name: "Władysław Jagiełło", gender: "M", role: "Król", role_tags:["Król","Monarcha"], epoka: EPOKI.ŚREDNIOWIECZE, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Polska/Litwa)", birthYear: 1351 },
   { name: "Jan Paweł II", gender: "M", role: "Papież", role_tags:["Papież","Religia"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.TEOKRACJA, region: "Europa (Polska/Watykan)", birthYear: 1920 },
   { name: "Marie Antoinette", gender: "K", role: "Królowa", role_tags:["Królowa","Monarcha"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.EGZEKUCJA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja/Austria)", birthYear: 1755 },
   { name: "Cesarz Hirohito", gender: "M", role: "Cesarz", role_tags:["Cesarz","Monarcha"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Azja (Japonia)", birthYear: 1901 },
-  { name: "Lech Wałęsa", gender: "M", role: "Polityk / Działacz", role_tags:["Polityk","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Europa (Polska)", birthYear: 1943 },
+  { name: "Lech Wałęsa", gender: "M", role: "Polityk", role_tags:["Polityk","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Europa (Polska)", birthYear: 1943 },
   { name: "Elżbieta I", gender: "K", role: "Królowa", role_tags:["Królowa","Monarcha"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Wielka Brytania)", birthYear: 1533 },
-  { name: "Czang Kaj-szek", gender: "M", role: "Polityk / Wódz", role_tags:["Polityk","Wódz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Azja (Chiny)", birthYear: 1887 },
-  { name: "Nelson Mandela", gender: "M", role: "Prezydent / Działacz", role_tags:["Prezydent","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Afryka (RPA)", birthYear: 1918 },
-  { name: "Wojciech Jaruzelski", gender: "M", role: "Polityk / Wojskowy", role_tags:["Polityk","Wojskowy"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Europa (Polska)", birthYear: 1923 },
-  { name: "Catherine de Medici", gender: "K", role: "Królowa / Polityk", role_tags:["Królowa","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja/Włochy)", birthYear: 1519 },
-  { name: "Leonardo da Vinci", gender: "M", role: "Artysta / Naukowiec", role_tags:["Artysta","Naukowiec"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Włochy)", birthYear: 1452 },
+  { name: "Czang Kaj-szek", gender: "M", role: "Polityk", role_tags:["Polityk","Wódz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Azja (Chiny)", birthYear: 1887 },
+  { name: "Nelson Mandela", gender: "M", role: "Prezydent", role_tags:["Prezydent","Działacz"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.LIBERALIZM, region: "Afryka (RPA)", birthYear: 1918 },
+  { name: "Wojciech Jaruzelski", gender: "M", role: "Polityk", role_tags:["Polityk","Wojskowy"], epoka: EPOKI.WSPÓŁCZESNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.AUTORYTARYZM, region: "Europa (Polska)", birthYear: 1923 },
+  { name: "Catherine de Medici", gender: "K", role: "Królowa", role_tags:["Królowa","Polityk"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.MONARCHIZM, region: "Europa (Francja/Włochy)", birthYear: 1519 },
+  { name: "Leonardo da Vinci", gender: "M", role: "Artysta", role_tags:["Artysta","Naukowiec"], epoka: EPOKI.RENESANS, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Włochy)", birthYear: 1452 },
   { name: "Wolfgang Amadeus Mozart", gender: "M", role: "Kompozytor", role_tags:["Kompozytor"], epoka: EPOKI.NOWOŻYTNOŚĆ, death: SPOSOBY_SMIERCI.NATURALNA, ideology: IDEOLOGIE.HUMANIZM, region: "Europa (Austria)", birthYear: 1756 },
   { name: "Hammurabi", gender:"M", role:"Król", role_tags:["Król","Monarcha"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Azja (Babilonia)", birthYear:-1810 },
   { name: "Nefertiti", gender:"K", role:"Królowa", role_tags:["Królowa","Monarcha"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Afryka (Egipt)", birthYear:-1370 },
@@ -646,23 +647,23 @@ const characters = [
   { name: "Karl Marx", gender:"M", role:"Filozof / Ekonomista", role_tags:["Filozof","Ekonomista"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KOMUNIZM, region:"Europa (Niemcy)", birthYear:1818 },
   { name: "Ludwig van Beethoven", gender:"M", role:"Kompozytor", role_tags:["Kompozytor"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Niemcy)", birthYear:1770 },
   { name: "Charles Darwin", gender:"M", role:"Naukowiec", role_tags:["Naukowiec"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Wielka Brytania)", birthYear:1809 },
-  { name: "Nikola Tesla", gender:"M", role:"Naukowiec / Wynalazca", role_tags:["Naukowiec","Wynalazca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Serbia/USA)", birthYear:1856 },
-  { name: "Thomas Edison", gender:"M", role:"Wynalazca / Przedsiębiorca", role_tags:["Wynalazca","Przedsiębiorca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KAPITALIZM, region:"Ameryka Północna (USA)", birthYear:1847 },
-  { name: "Louis Pasteur", gender:"M", role:"Naukowiec / Lekarz", role_tags:["Naukowiec","Lekarz"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Francja)", birthYear:1822 },
+  { name: "Nikola Tesla", gender:"M", role:"Naukowiec", role_tags:["Naukowiec","Wynalazca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Serbia/USA)", birthYear:1856 },
+  { name: "Thomas Edison", gender:"M", role:"Wynalazca", role_tags:["Wynalazca","Przedsiębiorca"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KAPITALIZM, region:"Ameryka Północna (USA)", birthYear:1847 },
+  { name: "Louis Pasteur", gender:"M", role:"Naukowiec", role_tags:["Naukowiec","Lekarz"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.HUMANIZM, region:"Europa (Francja)", birthYear:1822 },
   { name: "Klejstenes", gender:"M", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.DEMOKRACJA, region:"Europa (Grecja)", birthYear:-570 },
   { name: "Harriet Tubman", gender:"K", role:"Działaczka / Reformatorka", role_tags:["Działaczka","Reformatorka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1822 },
   { name: "Susan B. Anthony", gender:"K", role:"Działaczka", role_tags:["Działaczka","Feministka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1820 },
   { name: "Emmeline Pankhurst", gender:"K", role:"Działaczka", role_tags:["Działaczka","Feministka"], epoka:EPOKI.XIX_WIEK, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Europa (Wielka Brytania)", birthYear:1858 },
   { name: "Mansa Musa", gender:"M", role:"Król", role_tags:["Król","Monarcha"], epoka:EPOKI.ŚREDNIOWIECZE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Afryka (Mali)", birthYear:1280 },
-  { name: "Czyngis-chan", gender:"M", role:"Wódz / Zdobywca", role_tags:["Wódz","Wojownik"], epoka:EPOKI.ŚREDNIOWIECZE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Azja (Mongolia)", birthYear:1162 },
+  { name: "Czyngis-chan", gender:"M", role:"Wódz", role_tags:["Wódz","Zdobywca","Wojownik"], epoka:EPOKI.ŚREDNIOWIECZE, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Azja (Mongolia)", birthYear:1162 },
   { name: "Attyla", gender:"M", role:"Wódz", role_tags:["Wódz","Wojownik"], epoka:EPOKI.STAROŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Hunowie)", birthYear:406 },
-  { name: "Władimir Putin", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.AUTORYTARYZM, region:"Europa (Rosja)", birthYear:1952 },
-  { name: "Barack Obama", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1961 },
-  { name: "Angela Merkel", gender:"K", role:"Kanclerz", role_tags:["Kanclerz","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Niemcy)", birthYear:1954 },
+  { name: "Władimir Putin", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.BRAK, ideology:IDEOLOGIE.AUTORYTARYZM, region:"Europa (Rosja)", birthYear:1952 },
+  { name: "Barack Obama", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.BRAK, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1961 },
+  { name: "Angela Merkel", gender:"K", role:"Kanclerz", role_tags:["Kanclerz","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.BRAK, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Niemcy)", birthYear:1954 },
   { name: "Abraham Lincoln", gender:"M", role:"Prezydent", role_tags:["Prezydent","Polityk"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.ZAMACH, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1809 },
   { name: "Katarzyna II Wielka", gender:"K", role:"Caryca", role_tags:["Caryca","Monarcha"], epoka:EPOKI.NOWOŻYTNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Rosja)", birthYear:1729 },
   { name: "Elizabeth II", gender:"K", role:"Królowa", role_tags:["Królowa","Monarcha"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.MONARCHIZM, region:"Europa (Wielka Brytania)", birthYear:1926 },
-  { name: "Hillary Clinton", gender:"K", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1947 },
+  { name: "Hillary Clinton", gender:"K", role:"Polityk", role_tags:["Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.BRAK, ideology:IDEOLOGIE.LIBERALIZM, region:"Ameryka Północna (USA)", birthYear:1947 },
   { name: "Margaret Thatcher", gender:"K", role:"Premier", role_tags:["Premier","Polityk"], epoka:EPOKI.WSPÓŁCZESNOŚĆ, death:SPOSOBY_SMIERCI.NATURALNA, ideology:IDEOLOGIE.KONSERWATYZM, region:"Europa (Wielka Brytania)", birthYear:1925 },
 ];
 // Liczenie prób
@@ -1124,3 +1125,4 @@ document.body.addEventListener('click', function startMusic() {
 
 </body>
 </html> 
+
